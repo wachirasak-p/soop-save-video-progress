@@ -5,12 +5,9 @@
   "description": "Soop - Save Video Progress",
   "permissions": ["storage", "activeTab", "scripting"],
   "host_permissions": ["https://sooplive.com/*", "https://www.sooplive.com/*"],
-  "content_scripts": [
-    {
-      "matches": ["https://sooplive.com/*", "https://www.sooplive.com/*"],
-      "js": ["content.js"]
-    }
-  ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_title": "Save Video Time",
     "default_popup": "popup.html"
