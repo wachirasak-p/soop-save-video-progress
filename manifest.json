@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Soop - Save Video Progress",
+  "version": "1.0",
+  "description": "Soop - Save Video Progress",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["https://sooplive.com/*", "https://www.sooplive.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://sooplive.com/*", "https://www.sooplive.com/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_title": "Save Video Time",
+    "default_popup": "popup.html"
+  }
+}

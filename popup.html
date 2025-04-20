@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Saved Times</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 10px;
+        width: 220px;
+      }
+      button {
+        margin-top: 10px;
+      }
+      ul {
+        padding-left: 20px;
+      }
+      li {
+        cursor: pointer;
+      }
+      li:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="auto">Auto saved: ...</div>
+    <button id="saveBtn">บันทึกตอนนี้</button>
+    <h4>⏱ Manual Saves</h4>
+    <ul id="savedList"></ul>
+    <script src="popup.js"></script>
+  </body>
+</html>
