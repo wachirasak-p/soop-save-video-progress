@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Soop - Save Video Progress",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Soop - Save Video Progress",
   "permissions": ["storage", "activeTab", "scripting"],
   "host_permissions": ["https://sooplive.com/*", "https://www.sooplive.com/*"],

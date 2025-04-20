@@ -12,7 +12,7 @@ function timeToSeconds(timeStr) {
 
 function showJumpNotification(timeStr) {
   const toast = document.createElement("div");
-  toast.textContent = `⏩ กลับไปที่เวลา ${timeStr}`;
+  toast.textContent = `⏩ ไปที่เวลา ${timeStr}`;
   Object.assign(toast.style, {
     position: "fixed",
     bottom: "20px",
@@ -144,3 +144,64 @@ function checkUrlChangeLoop() {
 
 setupWatcher(); // ตรวจ DOM เมื่อโหลด
 checkUrlChangeLoop(); // ตรวจ route change ทุกครึ่งวิ
+
+function parseTimestamp(text) {
+  const parts = text.split(":").map(Number);
+  if (parts.length === 2) return parts[0] * 60 + parts[1];
+  if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+  return null;
+}
+
+function enhanceKartana9Comment() {
+  const allComments = document.querySelectorAll(
+    "div[data-sentry-component='Comment']"
+  );
+  for (const comment of allComments) {
+    const nameEl = comment.querySelector(
+      "div[data-sentry-element='ChannelNickname'] span"
+    );
+    if (!nameEl || nameEl.textContent.trim() !== "Kartana9") continue;
+
+    const textSpan = comment.querySelector(
+      "div[data-sentry-element='CommentText'] span"
+    );
+    if (!textSpan) continue;
+
+    const currentText = textSpan.innerText;
+    if (!/\d{1,2}:\d{2}/.test(currentText)) return;
+
+    // ถ้าเป็นลิงก์แล้ว ข้าม
+    if (textSpan.querySelector(".timestamp-link")) return;
+
+    const html = currentText.replace(
+      /(\d{1,2}:\d{2}(?::\d{2})?)/g,
+      (match) =>
+        `<span class="timestamp-link" data-time="${match}" style="color:#00aaff; text-decoration:underline; cursor:pointer;">${match}</span>`
+    );
+
+    textSpan.innerHTML = html;
+
+    textSpan.querySelectorAll(".timestamp-link").forEach((el) => {
+      if (el.dataset.bound) return;
+      el.addEventListener("click", () => {
+        const seconds = parseTimestamp(el.dataset.time);
+        const video = document.querySelector("video");
+        if (video) {
+          video.currentTime = seconds;
+          showJumpNotification(el.dataset.time);
+        }
+      });
+      el.dataset.bound = "true";
+    });
+
+    console.log("✅ Enhanced timestamps in Kartana9 comment");
+    break;
+  }
+}
+
+const interval = setInterval(() => {
+  const found = enhanceKartana9Comment();
+  if (found) {
+    clearInterval(interval); // ✅ หยุดทันทีหลังเจอ
+  }
+}, 1000);
